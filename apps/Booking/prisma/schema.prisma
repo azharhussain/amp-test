@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Booking {
+  id        String             @id @default(cuid())
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  startTime DateTime?
+  endTime   DateTime?
+  status    EnumBookingStatus?
+  userId    String?
+  roomId    String?
+}
+
+enum EnumBookingStatus {
+  Option1
+}
