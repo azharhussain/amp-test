@@ -139,6 +139,17 @@ class UserOrderByInput {
     nullable: true,
   })
   role?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  bookings?: SortOrder;
 }
 
 export { UserOrderByInput as UserOrderByInput };

@@ -1,6 +1,6 @@
 import { StringFilter } from "../../util/StringFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { BookingListRelationFilter } from "../booking/BookingListRelationFilter";
+import { JsonFilter } from "../../util/JsonFilter";
 
 export type UserWhereInput = {
   id?: StringFilter;
@@ -10,5 +10,5 @@ export type UserWhereInput = {
   email?: StringNullableFilter;
   name?: StringNullableFilter;
   role?: "Option1";
-  bookings?: BookingListRelationFilter;
+  bookings?: JsonFilter;
 };

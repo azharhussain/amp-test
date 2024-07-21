@@ -17,14 +17,12 @@ import {
   MaxLength,
   IsOptional,
   IsEnum,
-  ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
 import { EnumUserRole } from "./EnumUserRole";
-import { Booking } from "../../booking/base/Booking";
 
 @ObjectType()
 class User {
@@ -127,12 +125,13 @@ class User {
 
   @ApiProperty({
     required: false,
-    type: () => [Booking],
   })
-  @ValidateNested()
-  @Type(() => Booking)
+  @IsJSONValue()
   @IsOptional()
-  bookings?: Array<Booking>;
+  @Field(() => GraphQLJSON, {
+    nullable: true,
+  })
+  bookings!: JsonValue;
 }
 
 export { User as User };

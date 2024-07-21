@@ -26,8 +26,6 @@ import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { CreateUserArgs } from "./CreateUserArgs";
 import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
-import { BookingFindManyArgs } from "../../booking/base/BookingFindManyArgs";
-import { Booking } from "../../booking/base/Booking";
 import { UserService } from "../user.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => User)
@@ -132,25 +130,5 @@ export class UserResolverBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [Booking], { name: "bookings" })
-  @nestAccessControl.UseRoles({
-    resource: "Booking",
-    action: "read",
-    possession: "any",
-  })
-  async findBookings(
-    @graphql.Parent() parent: User,
-    @graphql.Args() args: BookingFindManyArgs
-  ): Promise<Booking[]> {
-    const results = await this.service.findBookings(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results;
   }
 }

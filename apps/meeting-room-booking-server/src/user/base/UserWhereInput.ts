@@ -13,10 +13,10 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum, ValidateNested } from "class-validator";
+import { IsOptional, IsEnum } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { EnumUserRole } from "./EnumUserRole";
-import { BookingListRelationFilter } from "../../booking/base/BookingListRelationFilter";
+import { JsonFilter } from "../../util/JsonFilter";
 
 @InputType()
 class UserWhereInput {
@@ -99,15 +99,14 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => BookingListRelationFilter,
+    type: JsonFilter,
   })
-  @ValidateNested()
-  @Type(() => BookingListRelationFilter)
+  @Type(() => JsonFilter)
   @IsOptional()
-  @Field(() => BookingListRelationFilter, {
+  @Field(() => JsonFilter, {
     nullable: true,
   })
-  bookings?: BookingListRelationFilter;
+  bookings?: JsonFilter;
 }
 
 export { UserWhereInput as UserWhereInput };

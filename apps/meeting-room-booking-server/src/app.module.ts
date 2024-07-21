@@ -1,6 +1,4 @@
 import { Module } from "@nestjs/common";
-import { RoomModule } from "./room/room.module";
-import { BookingModule } from "./booking/booking.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -19,8 +17,6 @@ import { AuthModule } from "./auth/auth.module";
   imports: [
     ACLModule,
     AuthModule,
-    RoomModule,
-    BookingModule,
     UserModule,
     HealthModule,
     PrismaModule,

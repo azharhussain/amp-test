@@ -12,4 +12,5 @@ export type UserOrderByInput = {
   roles?: SortOrder;
   name?: SortOrder;
   role?: SortOrder;
+  bookings?: SortOrder;
 };

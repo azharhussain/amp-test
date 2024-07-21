@@ -8,10 +8,8 @@ import {
   PasswordInput,
   SelectArrayInput,
   SelectInput,
-  ReferenceArrayInput,
 } from "react-admin";
 
-import { BookingTitle } from "../booking/BookingTitle";
 import { ROLES_OPTIONS } from "../user/RolesOptions";
 
 export const UserEdit = (props: EditProps): React.ReactElement => {
@@ -38,14 +36,7 @@ export const UserEdit = (props: EditProps): React.ReactElement => {
           allowEmpty
           optionValue="value"
         />
-        <ReferenceArrayInput
-          source="bookings"
-          reference="Booking"
-          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
-          format={(value: any) => value && value.map((v: any) => v.id)}
-        >
-          <SelectArrayInput optionText={BookingTitle} />
-        </ReferenceArrayInput>
+        <div />
       </SimpleForm>
     </Edit>
   );

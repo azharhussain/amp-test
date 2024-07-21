@@ -26,9 +26,6 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
-import { BookingFindManyArgs } from "../../booking/base/BookingFindManyArgs";
-import { Booking } from "../../booking/base/Booking";
-import { BookingWhereUniqueInput } from "../../booking/base/BookingWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -62,6 +59,7 @@ export class UserControllerBase {
         roles: true,
         name: true,
         role: true,
+        bookings: true,
       },
     });
   }
@@ -93,6 +91,7 @@ export class UserControllerBase {
         roles: true,
         name: true,
         role: true,
+        bookings: true,
       },
     });
   }
@@ -125,6 +124,7 @@ export class UserControllerBase {
         roles: true,
         name: true,
         role: true,
+        bookings: true,
       },
     });
     if (result === null) {
@@ -166,6 +166,7 @@ export class UserControllerBase {
           roles: true,
           name: true,
           role: true,
+          bookings: true,
         },
       });
     } catch (error) {
@@ -206,6 +207,7 @@ export class UserControllerBase {
           roles: true,
           name: true,
           role: true,
+          bookings: true,
         },
       });
     } catch (error) {
@@ -216,115 +218,5 @@ export class UserControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/bookings")
-  @ApiNestedQuery(BookingFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Booking",
-    action: "read",
-    possession: "any",
-  })
-  async findBookings(
-    @common.Req() request: Request,
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<Booking[]> {
-    const query = plainToClass(BookingFindManyArgs, request.query);
-    const results = await this.service.findBookings(params.id, {
-      ...query,
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        startTime: true,
-        endTime: true,
-        status: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
-
-        room: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/bookings")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async connectBookings(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: BookingWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      bookings: {
-        connect: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/bookings")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async updateBookings(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: BookingWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      bookings: {
-        set: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/bookings")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async disconnectBookings(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: BookingWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      bookings: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 }
